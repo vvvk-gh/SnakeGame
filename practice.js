@@ -29,8 +29,8 @@ function draw(){
 
 //update
 function update(){
-    
-    if(rect.x > W-40 || rect.x < 0){
+
+    if(rect.x > W-rect.w || rect.x < 0){
         console.log("reversed")
         rect.speed *= -1;
     }
