@@ -29,14 +29,23 @@ function init(){
         },
         
         updateSnake : function (){
-            //for movement accordind to direction
-            this.cells.pop() //removing last cell
             
             var headX = this.cells[0].x; // gets current head cell x -axis
             var headY = this.cells[0].y; // gets current head cell y -axis
+            
+            //check if the snake has eaten , increase the length of the snake and 
+            //generate food
+            if(headX == food.x && headY == food.y){
+                console.log("eaten food")
+              food = getRandomFood()
+            }
+             else{
+                this.cells.pop() //removing last cell
+            }
+        
             var nextX  
             var nextY
-            
+            //for movement according to direction
             if(this.direction == "right"){
                 nextX = headX +1; 
                 nextY = headY;
@@ -93,8 +102,8 @@ function init(){
 
 // generating food randomly on screen
 function getRandomFood() {
-    var foodX = (Math.random()*(W-cs)/cs) 
-    var foodY = (Math.random()*(H-cs)/cs)
+    var foodX = Math.round(Math.random()*(W-cs)/cs) 
+    var foodY = Math.round(Math.random()*(H-cs)/cs)
 
    var food = {
         x : foodX,
