@@ -4,6 +4,8 @@ function init(){
     W = H = canvas.width = canvas.height = 700;
     pen = canvas.getContext('2d')
     cs = 40; //cell size
+    food = getRandomFood()
+    game_over = false;
     
     //Creating snake object
     snake = {
@@ -55,6 +57,14 @@ function init(){
             }
 
             this.cells.unshift({x:nextX , y :nextY}) // adds a new head : adding an cell based on snake direction
+        
+            //if snake reaches boundaries alert and stop interval
+            last_x = Math.round(W/cs); // (total width / cell size) = gives the number of rows which will also be a last row
+            last_y = Math.round(H/cs) 
+            if(this.cells[0].x < 0  || this.cells[0].y < 0 || this.cells[0].x > last_x || this.cells[0].y > last_y){
+                    game_over = true;
+            }
+        
         }
 
     }
@@ -74,30 +84,46 @@ function init(){
         }
         console.log(snake.direction)
     }
-    //adding an eventlistener
+    //adding an eventlistener  to direction of the snake
     document.addEventListener('keydown' ,keyPressed)
     //creating the snake
     snake.createSnake();
     
 }
 
+// generating food randomly on screen
+function getRandomFood() {
+    var foodX = (Math.random()*(W-cs)/cs) 
+    var foodY = (Math.random()*(H-cs)/cs)
+
+   var food = {
+        x : foodX,
+        y : foodY
+    }
+
+    return food
+}
+
+
 function draw(){
-   //if snake reaches boundaries alert and stop interval
-   if(snake.cells[0].x * cs>= W || snake.cells[0].y*cs >= H || snake.cells[0].x*cs == 0 || snake.cells[0].y*cs < 0){
-       alert("Game Over")
-       clearInterval(f);
-   }
-   // else clear the previous whole window frame and draw the snake on screen
+   // clear the previous whole window frame and draw the snake on screen
    pen.clearRect(0,0,W,H) 
    snake.drawSnake()
-
+    //drawing the food 
+    pen.fillStyle = "green"
+    pen.fillRect(food.x*cs , food.y*cs ,cs ,cs)
 }
 
 function update(){
-        snake.updateSnake()
+    snake.updateSnake()
 }
 
 function gameLoop() {
+    if(game_over == true){
+        clearInterval(f);
+        alert("Game Over")
+        return;
+    }
     draw();
     update();
 }
