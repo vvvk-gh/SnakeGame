@@ -6,16 +6,19 @@ function init(){
     cs = 40; //cell size
     food = getRandomFood()
     game_over = false;
-    
+    score = 3    
     //creating an img object
     food_img = new Image();
-    food_img.scr = "assets/apple.png"
+    food_img.src = "assets/apple.png"
 
+    //creating an trophy
+     trophy = new Image()
+     trophy.src = "assets/trophy.png"
 
     //Creating snake object
     snake = {
         init_len :3,
-        color:"orange",
+        color:"white",
         cells :[],
         direction : "right",
 
@@ -42,7 +45,9 @@ function init(){
             //generate food
             if(headX == food.x && headY == food.y){
                 console.log("eaten food")
-              food = getRandomFood()
+                food = getRandomFood()
+                score++;
+
             }
              else{
                 this.cells.pop() //removing last cell
@@ -112,7 +117,8 @@ function getRandomFood() {
 
    var food = {
         x : foodX,
-        y : foodY
+        y : foodY,
+        color:"green"
     }
 
     return food
@@ -124,8 +130,18 @@ function draw(){
    pen.clearRect(0,0,W,H) 
    snake.drawSnake()
     //drawing the food 
-    pen.fillStyle = "green"
-    pen.fillRect(food.x*cs , food.y*cs ,cs ,cs)
+    pen.fillStyle = food.color;
+    //pen.fillRect(food.x*cs , food.y*cs ,cs ,cs)
+    //for image
+    pen.drawImage(food_img, food.x*cs, food.y*cs,cs,cs);
+    
+    pen.drawImage(trophy ,32,30 ,cs,cs)
+
+    pen.fillStyle = "black"
+    pen.font = "15px Roboto";
+    pen.fillText(score, 50 ,50)
+ 
+   
 }
 
 function update(){
