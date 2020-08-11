@@ -8,9 +8,10 @@ function init(){
     //Creating snake object
     snake = {
         init_len :3,
-        color:"green",
+        color:"orange",
         cells :[],
-        
+        direction : "right",
+
         createSnake : function (){
             for(var i =this.init_len; i>0 ; i--){
                 this.cells.push({x:i , y:0})
@@ -20,32 +21,73 @@ function init(){
 
         drawSnake : function () {
                 for (var i = 0; i < this.cells.length; i++) {
-                    pen.fillStyle = this.color
-                    pen.fillRect(this.cells[i].x *cs , this.cells[i].y *cs , cs-3 , cs-3);
+                    pen.fillStyle = snake.color
+                    pen.fillRect(this.cells[i].x*cs , this.cells[i].y*cs , cs-3 , cs-3);
                 }
         },
+        
         updateSnake : function (){
-            //for movement
+            //for movement accordind to direction
             this.cells.pop() //removing last cell
-            var headX = this.cells[0].x; // getting head cell x -axis
-            var headY = this.cells[0].y; // getting head cell y -axis
-            this.cells.unshift({x:headX+1 , y :headY}) // adding an cell with postined at x+1 before head 
+            
+            var headX = this.cells[0].x; // gets current head cell x -axis
+            var headY = this.cells[0].y; // gets current head cell y -axis
+            var nextX  
+            var nextY
+            
+            if(this.direction == "right"){
+                nextX = headX +1; 
+                nextY = headY;
+                       
+            } 
+            else if(this.direction == "left"){
+                nextX = headX -1;
+                nextY = headY;
+
+            } 
+            else if(this.direction == "down"){
+                nextX = headX;
+                nextY = headY +1;
+            }
+            else{
+                    nextX = headX;
+                    nextY = headY -1;
+            }
+
+            this.cells.unshift({x:nextX , y :nextY}) // adds a new head : adding an cell based on snake direction
         }
 
     }
-    //creating the snake in init()
+
+    function keyPressed(e) {
+        if(e.key  == "ArrowDown"){
+            snake.direction = "down"
+        }
+        else if(e.key == "ArrowUp"){
+            snake.direction = "up"
+        }
+        else if(e.key == "ArrowLeft"){
+            snake.direction = "left"
+        }
+        else{
+            snake.direction = "right"
+        }
+        console.log(snake.direction)
+    }
+    //adding an eventlistener
+    document.addEventListener('keydown' ,keyPressed)
+    //creating the snake
     snake.createSnake();
+    
 }
 
 function draw(){
    //if snake reaches boundaries alert and stop interval
-   if(snake.cells[0].x * cs>= W || snake.cells[0].y >= H || snake.cells[0].x == 0 ){
+   if(snake.cells[0].x * cs>= W || snake.cells[0].y*cs >= H || snake.cells[0].x*cs == 0 || snake.cells[0].y*cs < 0){
        alert("Game Over")
        clearInterval(f);
    }
-   //else do the below
-   //drawing the snake on screen
-   //clear the previous window
+   // else clear the previous whole window frame and draw the snake on screen
    pen.clearRect(0,0,W,H) 
    snake.drawSnake()
 
