@@ -7,6 +7,11 @@ function init(){
     food = getRandomFood()
     game_over = false;
     
+    //creating an img object
+    food_img = new Image();
+    food_img.scr = "assets/apple.png"
+
+
     //Creating snake object
     snake = {
         init_len :3,
