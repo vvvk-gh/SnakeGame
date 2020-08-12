@@ -15,6 +15,10 @@ function init(){
      trophy = new Image()
      trophy.src = "assets/trophy.png"
 
+    //Creating refernce for audio
+    eat = document.getElementById("eatMp3")
+    hit = document.getElementById("hitMp3")
+   
     //Creating snake object
     snake = {
         init_len :3,
@@ -44,7 +48,8 @@ function init(){
             //check if the snake has eaten , increase the length of the snake and 
             //generate food
             if(headX == food.x && headY == food.y){
-                console.log("eaten food")
+                //console.log("eaten food")
+                eat.play();
                 food = getRandomFood()
                 score++;
 
@@ -81,7 +86,8 @@ function init(){
             last_x = Math.round(W/cs); // (total width / cell size) = gives the number of rows which will also be a last row
             last_y = Math.round(H/cs) 
             if(this.cells[0].x < 0  || this.cells[0].y < 0 || this.cells[0].x > last_x || this.cells[0].y > last_y){
-                    game_over = true;
+                hit.play();    
+                game_over = true;
             }
         
         }
@@ -135,7 +141,7 @@ function draw(){
     //for image
     pen.drawImage(food_img, food.x*cs, food.y*cs,cs,cs);
     
-    pen.drawImage(trophy ,32,30 ,cs,cs)
+    pen.drawImage(trophy ,35,30 ,cs,cs)
 
     pen.fillStyle = "black"
     pen.font = "15px Roboto";
