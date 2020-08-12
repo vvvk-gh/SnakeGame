@@ -5,6 +5,7 @@ function init(){
     pen = canvas.getContext('2d')
     cs = 40; //cell size
     food = getRandomFood()
+    self_touch = false;
     game_over = false;
     score = 3    
     //creating an img object
@@ -44,11 +45,11 @@ function init(){
             
             var headX = this.cells[0].x; // gets current head cell x -axis
             var headY = this.cells[0].y; // gets current head cell y -axis
-            
+
+
             //check if the snake has eaten , increase the length of the snake and 
             //generate food
             if(headX == food.x && headY == food.y){
-                //console.log("eaten food")
                 eat.play();
                 food = getRandomFood()
                 score++;
@@ -130,6 +131,10 @@ function getRandomFood() {
     return food
 }
 
+function checkTouched(){
+        self_touch = true;
+    }
+
 
 function draw(){
    // clear the previous whole window frame and draw the snake on screen
@@ -155,7 +160,7 @@ function update(){
 }
 
 function gameLoop() {
-    if(game_over == true){
+    if(game_over == true || self_touch == true){
         clearInterval(f);
         alert("Game Over")
         return;
